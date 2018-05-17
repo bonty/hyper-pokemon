@@ -1,39 +1,44 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const color = require('color');
-const yaml = require('js-yaml');
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const color = require("color");
+const yaml = require("js-yaml");
 
 const filepaths = {
-  backgrounds: path.resolve(__dirname, 'backgrounds'),
-  gifs: path.resolve(__dirname, 'pokecursors')
+  backgrounds: path.resolve(__dirname, "backgrounds"),
+  gifs: path.resolve(__dirname, "pokecursors"),
 };
 
 const colorSchemes = {
-  types: path.resolve(__dirname, 'types.yml'),
-  pokemon: path.resolve(__dirname, 'pokemon.yml'),
-  trainers: path.resolve(__dirname, 'trainers.yml')
+  types: path.resolve(__dirname, "types.yml"),
+  pokemon: path.resolve(__dirname, "pokemon.yml"),
+  trainers: path.resolve(__dirname, "trainers.yml"),
 };
 
 function getUserOptions(configObj) {
-  return Object.assign({}, {
-    get pokemon() {
-      if (Array.isArray(configObj.pokemon)) {
-        return configObj.pokemon[Math.floor(Math.random() * configObj.pokemon.length)];
-      }
-      return configObj.pokemon || 'pikachu';
-    },
-    get poketab() {
-      return (configObj.poketab || 'false') === 'true';
-    },
-    get unibody() {
-      return (configObj.unibody || 'true') !== 'false';
+  return Object.assign(
+    {},
+    {
+      get pokemon() {
+        if (Array.isArray(configObj.pokemon)) {
+          return configObj.pokemon[
+            Math.floor(Math.random() * configObj.pokemon.length)
+          ];
+        }
+        return configObj.pokemon || "pikachu";
+      },
+      get poketab() {
+        return (configObj.poketab || "false") === "true";
+      },
+      get unibody() {
+        return (configObj.unibody || "true") !== "false";
+      },
     }
-  });
+  );
 }
 
 function getRandomTheme(category) {
-  const index = Math.floor(Math.random() * (Object.keys(category).length));
+  const index = Math.floor(Math.random() * Object.keys(category).length);
   const name = Object.keys(category)[index];
   return [name, category[name]];
 }
@@ -41,7 +46,10 @@ function getRandomTheme(category) {
 function getThemes() {
   const themes = {};
   Object.keys(colorSchemes).forEach(category => {
-    Object.assign(themes, yaml.safeLoad(fs.readFileSync(colorSchemes[category], 'utf8')));
+    Object.assign(
+      themes,
+      yaml.safeLoad(fs.readFileSync(colorSchemes[category], "utf8"))
+    );
   });
   return themes;
 }
@@ -49,7 +57,7 @@ function getThemes() {
 function getThemeColors(theme) {
   const themes = getThemes();
   const name = theme.trim().toLowerCase();
-  if (name === 'random') {
+  if (name === "random") {
     return getRandomTheme(themes.pokemon);
   }
   if (Object.prototype.hasOwnProperty.call(themes, name)) {
@@ -61,17 +69,17 @@ function getThemeColors(theme) {
     return [name, themes.pokemon[name]];
   }
   // Got non-existent theme name thus resolve to default
-  return ['pikachu', themes.pokemon.pikachu];
+  return ["pikachu", themes.pokemon.pikachu];
 }
 
 function getMediaPaths(theme) {
   const [imagePath, gifPath] = [[], []];
-  imagePath.push(...[path.join(filepaths.backgrounds, theme), '.png']);
-  gifPath.push(...[path.join(filepaths.gifs, theme), '.gif']);
-  if (process.platform === 'win32') {
-    return [imagePath, gifPath].map(item => item.join('').replace(/\\/g, '/'));
+  imagePath.push(...[path.join(filepaths.backgrounds, theme), ".png"]);
+  gifPath.push(...[path.join(filepaths.gifs, theme), ".gif"]);
+  if (process.platform === "win32") {
+    return [imagePath, gifPath].map(item => item.join("").replace(/\\/g, "/"));
   }
-  return [imagePath.join(''), gifPath.join('')];
+  return [imagePath.join(""), gifPath.join("")];
 }
 
 exports.decorateConfig = config => {
@@ -81,16 +89,20 @@ exports.decorateConfig = config => {
   const [imagePath, gifPath] = getMediaPaths(themeName);
 
   // Set theme colors
-  const {primary, secondary, tertiary, unibody} = colors;
+  const { primary, secondary, tertiary, unibody } = colors;
   const background = options.unibody ? unibody : primary;
-  const selection = color(primary).alpha(0.3).string();
-  const transparent = color(secondary).alpha(0).string();
-  const header = color(background).isDark() ? '#FAFAFA' : '#010101';
-  const activeTab = color(secondary).isDark() ? '#FAFAFA' : '#383A42';
+  const selection = color(primary)
+    .alpha(0.3)
+    .string();
+  const transparent = color(secondary)
+    .alpha(0)
+    .string();
+  const header = color(background).isDark() ? "#FAFAFA" : "#010101";
+  const activeTab = color(secondary).isDark() ? "#FAFAFA" : "#383A42";
   const tab = color(activeTab).darken(0.1);
 
   // Set poketab
-  const tabContent = options.poketab ? gifPath : '';
+  const tabContent = options.poketab ? gifPath : "";
 
   const syntax = {
     backgroundColor: transparent,
@@ -99,29 +111,29 @@ exports.decorateConfig = config => {
     foregroundColor: secondary,
     selectionColor: selection,
     colors: {
-      black: tertiary,
-      red: secondary,
-      green: tertiary,
-      yellow: secondary,
-      blue: secondary,
-      magenta: secondary,
-      cyan: secondary,
-      white: secondary,
-      lightBlack: tertiary,
-      lightRed: secondary,
-      lightGreen: secondary,
-      lightYellow: secondary,
-      lightBlue: secondary,
-      lightMagenta: secondary,
-      lightCyan: secondary,
-      lightWhite: secondary
-    }
+      black: "#201602",
+      red: "#c35359",
+      green: "#18974e",
+      yellow: "#a88339",
+      blue: "#477ca1",
+      magenta: "#8868b3",
+      cyan: "#75a738",
+      white: "#948e48",
+      lightBlack: "#6c6823",
+      lightRed: "#c35359",
+      lightGreen: "#18974e",
+      lightYellow: "#a88339",
+      lightBlue: "#477ca1",
+      lightMageta: "#8868b3",
+      lightCyan: "#75a738",
+      lightWhite: "#faf0a5",
+    },
   };
 
   return Object.assign({}, config, syntax, {
-    termCSS: config.termCSS || '',
+    termCSS: config.termCSS || "",
     css: `
-      ${config.css || ''}
+      ${config.css || ""}
       .terms_terms {
         background: url("file://${imagePath}") center;
         background-size: cover;
@@ -189,6 +201,6 @@ exports.decorateConfig = config => {
       .terms_terms .terms_termGroup .splitpane_panes .splitpane_divider {
         background-color: ${secondary} !important;
       }
-    `
+    `,
   });
 };
