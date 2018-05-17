@@ -98,7 +98,7 @@ exports.decorateConfig = config => {
     .alpha(0)
     .string();
   const header = color(background).isDark() ? "#FAFAFA" : "#010101";
-  const activeTab = color(secondary).isDark() ? "#FAFAFA" : "#383A42";
+  const activeTab = background;
   const tab = color(activeTab).darken(0.1);
 
   // Set poketab
