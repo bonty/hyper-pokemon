@@ -120,13 +120,13 @@ exports.decorateConfig = config => {
       cyan: "#75a738",
       white: "#948e48",
       lightBlack: "#6c6823",
-      lightRed: "#c35359",
-      lightGreen: "#18974e",
-      lightYellow: "#a88339",
-      lightBlue: "#477ca1",
-      lightMageta: "#8868b3",
-      lightCyan: "#75a738",
-      lightWhite: "#faf0a5",
+      lightRed: "#d65b62",
+      lightGreen: "#1db95f",
+      lightYellow: "#d6a749",
+      lightBlue: "#5a9dcc",
+      lightMagenta: "#a27cd5",
+      lightCyan: "#91cf45",
+      lightWhite: "#dcd391"
     },
   };
 
